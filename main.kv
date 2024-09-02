@@ -1,19 +1,202 @@
-MDFloatLayout:
+ScreenManager:
+    LoginScreen:
+        name: 'login_screen'
+
+    MainScreen:
+        name: 'main_screen'
+
+        MDFloatLayout:
+            MDLabel:
+                id: task_label
+                halign: 'center'
+                markup: True
+                text: "[size=75][b]Taskify[/b][/size]"
+                pos_hint: {'y': .45}
+
+            ScrollView:
+                pos_hint: {'center_y': .5, 'center_x': .5}
+                size_hint: .9, .8
+                MDList:
+                    id: container
+
+            MDFloatingActionButton:
+                icon: 'plus-thick'
+                on_release: app.show_task_dialog()
+                elevation_normal: 12
+                pos_hint: {'x': .45 , 'y': .04}
+
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(50)
+        spacing: dp(20)
+
+        MDLabel:
+            text: "Login"
+            halign: 'center'
+            font_style: 'H4'
+
+        MDTextField:
+            id: username
+            hint_text: "Username"
+            icon_right: "account"
+            size_hint_x: 0.8
+            pos_hint: {'center_x': 0.5}
+
+        MDTextField:
+            id: password
+            hint_text: "Password"
+            icon_right: "lock"
+            password: True
+            size_hint_x: 0.8
+            pos_hint: {'center_x': 0.5}
+
+        MDLabel:
+            id: login_message
+            halign: 'center'
+            text: ""
+            theme_text_color: "Error"
+
+        MDRaisedButton:
+            text: "Login"
+            on_release: root.attempt_login(username.text, password.text)
+            size_hint_x: 0.5
+            pos_hint: {'center_x': 0.5}
+
+        MDFlatButton:
+            text: "Register"
+            on_release: root.open_register_dialog()
+            size_hint_x: 0.5
+            pos_hint: {'center_x': 0.5}
+
+<RegisterScreen>:
+    username: username
+    password: password
+
+    MDFloatLayout:
+        MDTextField:
+            id: username
+            hint_text: "Choose Username"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            size_hint_x: 0.8
+
+        MDTextField:
+            id: password
+            hint_text: "Choose Password"
+            password: True
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            size_hint_x: 0.8
+
+        MDRaisedButton:
+            text: "Register"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            size_hint_x: 0.5
+            on_release: root.register()
+
+        MDFlatButton:
+            text: "Back to Login"
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+            size_hint_x: 0.5
+            on_release: app.root.current = "login_screen"
+
+<RegisterContent>:
+    orientation: 'vertical'
+    padding: dp(20)
+    spacing: dp(20)
+    size_hint_y: None
+    height: dp(200)
+
+    MDTextField:
+        id: username
+        hint_text: "Enter a username"
+        icon_right: "account"
+        size_hint_x: 0.8
+        pos_hint: {'center_x': 0.5}
+
+    MDTextField:
+        id: password
+        hint_text: "Enter a password"
+        password: True
+        icon_right: "lock"
+        size_hint_x: 0.8
+        pos_hint: {'center_x': 0.5}
+
     MDLabel:
-        id: task_label
-        halign: "center"
-        markup: True
-        text: "[b][u][size=48]Task Manager[/size][/u][/b]"
-        pos_hint: {"y": 0.45}
+        id: register_message
+        halign: 'center'
+        text: ""
+        theme_text_color: "Error"
 
-    ScrollView
-        pos_hint: {"center_y": 0.5, "center_x": 0.5}
-        size_hint: 0.9, 0.8
-        MDList:
-            id: container
+<MainScreen>
+    MDFloatLayout:
+        MDLabel:
+            id: task_label
+            halign: 'center'
+            markup: True
+            text: "[size=75][b]Taskify[/b][/size]"
+            pos_hint: {'y': .45}
 
-    MDFloatingActionButton:
-        icon: "plus-thick"
-        # on_release:
-        elevation_normal: 12
-        pos_hint: {"x" : 0.45 , "y": 0.04 }
+        ScrollView:
+            pos_hint: {'center_y': .5, 'center_x': .5}
+            size_hint: .9, .8
+
+            MDList:
+                id: container
+
+        MDFloatingActionButton:
+            icon: 'plus-thick'
+            on_release: app.show_task_dialog()
+            elevation_normal: 12
+            pos_hint: {'x': .45 , 'y': .04}
+
+<DialogContent>:
+    orientation: "vertical"
+    spacing: "10dp"
+    size_hint: 1, None
+    height: "130dp"
+
+    GridLayout:
+        rows: 1
+
+        MDTextField:
+            id: task_text
+            hint_text: "Add Task..."
+            pos_hint: {"center_y": .4}
+            max_text_length: 50
+            on_text_validate: (app.add_task(task_text, date_text.text), app.close_dialog())
+
+        MDIconButton:
+            icon: 'calendar'
+            on_release: root.show_date_picker()
+            padding: '10dp'
+
+    MDLabel:
+        spacing: '10dp'
+        id: date_text
+
+    BoxLayout:
+        orientation: 'horizontal'
+
+        MDRaisedButton:
+            text: "SAVE"
+            on_release: (app.add_task(task_text, date_text.text), app.close_dialog())
+
+        MDFlatButton:
+            text: 'CANCEL'
+            on_release: app.close_dialog()
+
+<ListItemWithCheckbox>:
+    id: the_list_item
+    markup: True
+
+    LeftCheckbox:
+        id: check
+        on_release:
+            root.mark(check, the_list_item)
+
+    IconRightWidget:
+        icon: 'trash-can-outline'
+        theme_text_color: "Custom"
+        text_color: 0, 0, 0, 1
+        on_release:
+            root.delete_item(the_list_item)
