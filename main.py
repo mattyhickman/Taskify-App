@@ -1,5 +1,5 @@
 # Packages and dependencies
-from kivymd.app import MDApp # Base class for your Kivy MD app
+from kivymd.app import MDApp # Base class for Kivy MD app
 from kivymd.uix.dialog import MDDialog # Class for creating dialogs
 from kivymd.uix.boxlayout import MDBoxLayout # Layout to organise widgets in a box
 from kivymd.uix.pickers import MDDatePicker # Date picker widget
