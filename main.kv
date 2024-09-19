@@ -1,119 +1,122 @@
-ScreenManager:
-    LoginScreen:
-        name: 'login_screen'
+ScreenManager: # ScreenManager is the root widget managing multiple screens
+    LoginScreen: # First screen (login) of the app
+        name: 'login_screen' # Screen is identified by 'login_screen'
 
-    MainScreen:
-        name: 'main_screen'
+    MainScreen: # Main screen where tasks are shown and managed
+        name: 'main_screen' # Screen identified by 'main_screen'
 
-        MDFloatLayout:
-            MDLabel:
-                id: task_label
-                halign: 'center'
-                markup: True
-                text: "[size=75][b]Taskify[/b][/size]"
-                pos_hint: {'y': .45}
+        MDFloatLayout: # A layout allowing floating widgets
+            MDLabel: # Label for the app's title
+                id: task_label # Unique identifier for the label
+                halign: 'center' # Horizontal alignment set to center
+                markup: True # Enables markup for styling
+                text: "[size=75][b]Taskify[/b][/size]" # Title of the app with bold text and size 75
+                pos_hint: {'y': .45} # Position label vertically
 
-            ScrollView:
-                pos_hint: {'center_y': .5, 'center_x': .5}
-                size_hint: .9, .8
-                MDList:
-                    id: container
+            ScrollView: # Enables scrolling for the task list
+                pos_hint: {'center_y': .5, 'center_x': .5} # Center the scroll view on the screen
+                size_hint: .9, .8 # Set the size of the scrollable area
+                MDList: # List widget to hold the tasks
+                    id: container # Unique identifier to dynamically add tasks
 
-            MDFloatingActionButton:
-                icon: 'plus-thick'
-                on_release: app.show_task_dialog()
-                elevation_normal: 12
-                pos_hint: {'x': .45 , 'y': .04}
+            MDFloatingActionButton:  # Button to add a new task
+                icon: 'plus-thick'  # Icon for the button
+                on_release: app.show_task_dialog()  # Call method to show task dialog
+                elevation_normal: 12  # Elevation/shadow effect
+                pos_hint: {'x': .45 , 'y': .04}  # Position the button at the bottom center
 
+# Login screen widget
 <LoginScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        padding: dp(50)
-        spacing: dp(20)
+    BoxLayout: # Layout that stacks vertically
+        orientation: 'vertical' # Layout from top to bottom
+        padding: dp(50) # Padding around the layout
+        spacing: dp(20) # Space between widgets
 
-        MDLabel:
+        MDLabel: # Title label for the login screen
             text: "Login"
-            halign: 'center'
-            font_style: 'H4'
+            halign: 'center'# Horizontally align text to the center
+            font_style: 'H4' # Set font style to H4 (large)
 
-        MDTextField:
-            id: username
-            hint_text: "Username"
-            icon_right: "account"
+        MDTextField: # Input field for the username
+            id: username # Unique ID for the username field
+            hint_text: "Username" # Placeholder text
+            icon_right: "account" # Account icon on the right side
+            size_hint_x: 0.8 # Width relative to its parent (80%)
+            pos_hint: {'center_x': 0.5} # Center horizontally
+
+        MDTextField: # Input field for the password
+            id: password # Unique ID for the password field
+            hint_text: "Password" # Placeholder text
+            icon_right: "lock" # Lock icon on the right
+            password: True # Hide characters in the input
             size_hint_x: 0.8
             pos_hint: {'center_x': 0.5}
 
-        MDTextField:
-            id: password
-            hint_text: "Password"
-            icon_right: "lock"
-            password: True
-            size_hint_x: 0.8
-            pos_hint: {'center_x': 0.5}
-
-        MDLabel:
+        MDLabel: # Label to display login error messages
             id: login_message
-            halign: 'center'
-            text: ""
-            theme_text_color: "Error"
+            halign: 'center' # Center-align the error message
+            text: "" # Initially empty
+            theme_text_colour: "Error" # Set text colour to red for errors
 
-        MDRaisedButton:
+        MDRaisedButton: # Button to submit login details
             text: "Login"
-            on_release: root.attempt_login(username.text, password.text)
-            size_hint_x: 0.5
-            pos_hint: {'center_x': 0.5}
+            on_release: root.attempt_login(username.text, password.text) # Call login attempt method
+            size_hint_x: 0.5 # Button width is 50% of parent
+            pos_hint: {'center_x': 0.5} # Center horizontally
 
-        MDFlatButton:
+        MDFlatButton: # Button to open registration screen
             text: "Register"
-            on_release: root.open_register_dialog()
+            on_release: root.open_register_dialog() # Call method to show registration dialog
             size_hint_x: 0.5
             pos_hint: {'center_x': 0.5}
 
+# Registration screen widget
 <RegisterScreen>:
-    username: username
-    password: password
+    username: username # Reference to username field
+    password: password # Reference to password field
 
-    MDFloatLayout:
-        MDTextField:
+    MDFloatLayout: # Floating layout for positioning widgets freely
+        MDTextField: # Username input for registration
             id: username
             hint_text: "Choose Username"
-            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
-            size_hint_x: 0.8
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6} # Positioned in the center
+            size_hint_x: 0.8 # 80% of parent width
 
-        MDTextField:
+        MDTextField: # Password input for registration
             id: password
             hint_text: "Choose Password"
-            password: True
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            password: True # Hide input characters
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5} # Positioned in the center
             size_hint_x: 0.8
 
-        MDRaisedButton:
+        MDRaisedButton: # Button to submit registration details
             text: "Register"
             pos_hint: {'center_x': 0.5, 'center_y': 0.4}
-            size_hint_x: 0.5
-            on_release: root.register()
+            size_hint_x: 0.5 # Width is 50% of parent
+            on_release: root.register() # Call method to register the user
 
-        MDFlatButton:
+        MDFlatButton: # Button to return to the login screen
             text: "Back to Login"
             pos_hint: {'center_x': 0.5, 'center_y': 0.3}
             size_hint_x: 0.5
-            on_release: app.root.current = "login_screen"
+            on_release: app.root.current = "login_screen" # Change screen to login
 
+# Registration dialog content
 <RegisterContent>:
-    orientation: 'vertical'
+    orientation: 'vertical' # Stack elements vertically
     padding: dp(20)
     spacing: dp(20)
-    size_hint_y: None
-    height: dp(200)
+    size_hint_y: None # Height is not relative to parent
+    height: dp(200) # Fixed height of 200 dp
 
-    MDTextField:
+    MDTextField: # Username input field
         id: username
         hint_text: "Enter a username"
         icon_right: "account"
         size_hint_x: 0.8
         pos_hint: {'center_x': 0.5}
 
-    MDTextField:
+    MDTextField: # Password input field
         id: password
         hint_text: "Enter a password"
         password: True
@@ -121,82 +124,148 @@ ScreenManager:
         size_hint_x: 0.8
         pos_hint: {'center_x': 0.5}
 
-    MDLabel:
+    MDLabel: # Error message label for registration
         id: register_message
         halign: 'center'
         text: ""
-        theme_text_color: "Error"
+        theme_text_colour: "Error"
 
+# Main screen with tasks
 <MainScreen>
     MDFloatLayout:
-        MDLabel:
+        MDLabel: # Title for the main screen
             id: task_label
             halign: 'center'
             markup: True
             text: "[size=75][b]Taskify[/b][/size]"
             pos_hint: {'y': .45}
 
-        ScrollView:
+        MDIconButton: # Button to open settings
+            icon: "cog"
+            icon_size: "45sp"
+            pos_hint: {"center_x": 0.1, "center_y": 0.1}
+            theme_text_colour: "Custom"
+            text_colour: [0, 0, 0, 1]  # Black colour for the icon
+            on_release:
+                app.open_settings() # Call method to open settings
+
+        MDIconButton: # Button to go back to login
+            icon: "arrow-left"
+            pos_hint: {"center_x": 0.1, "center_y": 0.9}  # Positioned at top-left
+            theme_text_colour: "Custom"
+            text_colour: [0, 0, 0, 1]  # Black colour for the arrow
+            on_release:
+                app.root.current = "login" # Switch to login screen
+
+        ScrollView: # Scrollable area for tasks
             pos_hint: {'center_y': .5, 'center_x': .5}
             size_hint: .9, .8
-
             MDList:
-                id: container
+                id: container # Task container to dynamically add tasks
 
-        MDFloatingActionButton:
+        MDFloatingActionButton: # Button to add a new task
             icon: 'plus-thick'
-            on_release: app.show_task_dialog()
+            on_release: app.show_task_dialog() # Show task creation dialog
             elevation_normal: 12
             pos_hint: {'x': .45 , 'y': .04}
 
+        MDIconButton: # Button to go to profile screen
+            icon: "account-circle"
+            icon_size: "50sp"
+            theme_text_colour: "Custom"
+            text_colour: 0, 0, 0, 1
+            pos_hint: {'x': 0.8, 'y': 0.035} # Positioned at bottom-right
+            on_release: app.root.current = 'profile' # Switch to profile screen
+
+# Profile screen widget
+<ProfileScreen>:
+    MDFloatLayout: # Floating layout to position elements freely
+        MDIconButton: # Button to go back to the main screen
+            icon: "arrow-left" # Icon for the back button
+            pos_hint: {"center_x": 0.1, "center_y": 0.95} # Positioned at the top-left
+            on_release:
+                app.root.current = 'main' # Change screen to main screen
+
+        MDLabel: # Title label for the profile screen
+            halign: 'center' # Center-align text
+            markup: True # Allows markup in the text
+            text: "[size=75][b]Profile[/b][/size]" # Profile title in bold and large font
+            pos_hint: {'y': .45} # Position slightly above center
+
+        MDLabel: # Label to show the username
+            halign: 'center' # Center-align text
+            text: "Username: {}".format(root.username) # Display the user's username
+            font_style: 'H5' # Use a large font style
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6} # Position it above the center
+
+        MDLabel: # Label to show the password
+            halign: 'center' # Center-align text
+            text: "Password: {}".format(root.password) # Display the user's password
+            font_style: 'H5' # Use a large font style
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5} # Position it at the center
+
+        MDLabel: # Label to show the total number of tasks created
+            halign: 'center' # Center-align text
+            text: "Total Tasks Created: {}".format(root.total_tasks_created) # Show total tasks created
+            font_style: 'H5' # Use a large font style
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4} # Position it below the password
+
+        MDLabel: # Label to show the total number of tasks completed
+            halign: 'center' # Center-align text
+            text: "Total Tasks Completed: {}".format(root.total_tasks_completed) # Show total tasks completed
+            font_style: 'H5' # Use a large font style
+            pos_hint: {'center_x': 0.5, 'center_y': 0.3} # Position it below the "tasks created" label
+
+# Dialog for adding a new task
 <DialogContent>:
-    orientation: "vertical"
-    spacing: "10dp"
-    size_hint: 1, None
-    height: "130dp"
+    orientation: "vertical" # Arrange elements vertically
+    spacing: "10dp" # Space between elements
+    size_hint: 1, None # Take full width of parent, fixed height
+    height: "130dp" # Height of the dialog content
 
-    GridLayout:
-        rows: 1
+    GridLayout: # Grid layout to arrange text field and icon
+        rows: 1 # Single row for text input and calendar icon
 
-        MDTextField:
-            id: task_text
-            hint_text: "Add Task..."
-            pos_hint: {"center_y": .4}
-            max_text_length: 50
-            on_text_validate: (app.add_task(task_text, date_text.text), app.close_dialog())
+        MDTextField: # Input field to enter a new task
+            id: task_text # Unique identifier for the task input field
+            hint_text: "Add Task..." # Placeholder text
+            pos_hint: {"center_y": .4} # Vertically center the input field
+            max_text_length: 50 # Limit the task description to 50 characters
+            on_text_validate: (app.add_task(task_text, date_text.text), app.close_dialog()) # Add task when 'Enter' is pressed
 
-        MDIconButton:
-            icon: 'calendar'
-            on_release: root.show_date_picker()
-            padding: '10dp'
+        MDIconButton: # Button to open a date picker for task due date
+            icon: 'calendar' # Icon for the calendar button
+            on_release: root.show_date_picker() # Show the date picker when clicked
+            padding: '10dp' # Padding around the icon
 
-    MDLabel:
-        spacing: '10dp'
-        id: date_text
+    MDLabel: # Label to display the selected date
+        spacing: '10dp' # Space between elements
+        id: date_text # Unique ID to dynamically update the selected date
 
-    BoxLayout:
-        orientation: 'horizontal'
+    BoxLayout: # Horizontal layout for SAVE and CANCEL buttons
+        orientation: 'horizontal' # Arrange buttons horizontally
 
-        MDRaisedButton:
+        MDRaisedButton: # Button to save the task
             text: "SAVE"
-            on_release: (app.add_task(task_text, date_text.text), app.close_dialog())
+            on_release: (app.add_task(task_text, date_text.text), app.close_dialog()) # Save task and close dialog
 
-        MDFlatButton:
+        MDFlatButton: # Button to cancel task creation
             text: 'CANCEL'
-            on_release: app.close_dialog()
+            on_release: app.close_dialog() # Close the dialog without saving
 
+# List item with a checkbox for tasks
 <ListItemWithCheckbox>:
-    id: the_list_item
-    markup: True
+    id: the_list_item # Unique identifier for the list item
+    markup: True # Allows markup for the text
 
-    LeftCheckbox:
-        id: check
+    LeftCheckbox: # Checkbox on the left of the list item
+        id: check # Unique identifier for the checkbox
         on_release:
-            root.mark(check, the_list_item)
+            root.mark(check, the_list_item) # Mark the task as completed when checkbox is checked
 
-    IconRightWidget:
-        icon: 'trash-can-outline'
-        theme_text_color: "Custom"
-        text_color: 0, 0, 0, 1
+    IconRightWidget: # Trash icon for deleting the task
+        icon: 'trash-can-outline' # Trash can icon
+        theme_text_colour: "Custom" # Custom text colour
+        text_colour: 0, 0, 0, 1 # Set colour to black
         on_release:
-            root.delete_item(the_list_item)
+            root.delete_item(the_list_item) # Delete the task when trash icon is pressed
